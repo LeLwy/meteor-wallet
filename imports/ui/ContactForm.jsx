@@ -9,7 +9,6 @@ export const ContactForm = () => {
 
     const saveContact = (e) => {
 
-        e.preventDefault();
         ContactsCollection.insert({ name, email, imageUrl });
         setName('');
         setEmail('');
