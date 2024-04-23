@@ -4,6 +4,7 @@ import { Meteor } from 'meteor/meteor';
 import {useSubscribe, useFind} from 'meteor/react-meteor-data';
 import { ErrorAlert } from "./components/ErrorAlert";
 import { SuccessAlert } from "./components/SuccessAlert";
+import { Loading } from "./components/Loading";
 
 export const ContactList = () => {
 
@@ -41,13 +42,7 @@ export const ContactList = () => {
 
   if(isLoading()){
     return (
-      <div>
-        <div className="mt-10">
-          <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">
-            Loading...
-          </h3>
-        </div>
-      </div>
+      <Loading />
     )
   }
 
@@ -61,6 +56,7 @@ export const ContactList = () => {
           <div className="min-w-0 flex-1">
             <p className="text-sm font-medium text-gray-900 truncate">{contact.name}</p>
             <p className="text-sm font-medium text-gray-500 truncate">{contact.email}</p>
+            <p className="text-sm font-medium text-gray-500 truncate">{contact.walletId}</p>
           </div>
           <div>
             <a
