@@ -1,20 +1,32 @@
 import React from "react";
-import {ContactsCollection} from "../api/ContactsCollection";
+import { Meteor } from 'meteor/meteor';
+import { ErrorAlert } from "./components/ErrorAlert";
+import { SuccessAlert } from "./components/SuccessAlert";
 
 export const ContactForm = () => {
-  const [name, setName] = React.useState(""); // Formik
+  const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [imageUrl, setImageUrl] = React.useState("");
+  const [error, setError] = React.useState("");
+  const [success, setSuccess] = React.useState("");
 
   const saveContact = () => {
-    ContactsCollection.insert({ name, email, imageUrl });
-    setName("");
-    setEmail("");
-    setImageUrl("");
+    Meteor.call('contacts.insert', { name, email, imageUrl }, (errorResponse) => {
+      if(errorResponse){
+        setError(errorResponse.error);
+      } else {
+        setName("");
+        setEmail("");
+        setImageUrl("");
+        setSuccess("Contact saved !")
+      }
+    });
   }
 
   return (
     <form className="mt-6">
+      {error && <ErrorAlert message={error} />}
+      {success && <SuccessAlert message={success} />}
       <div className="grid grid-cols-6 gap-6">
         <div className="col-span-6 sm:col-span-6 lg:col-span-2">
           <label htmlFor="name" className="block text-sm font-medium text-gray-700">
