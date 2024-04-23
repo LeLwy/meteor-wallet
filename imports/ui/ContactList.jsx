@@ -10,8 +10,8 @@ export const ContactList = () => {
   const [error, setError] = React.useState("");
   const [success, setSuccess] = React.useState("");
 
-  const isLoading = useSubscribe('allContacts');
-  const contacts = useFind(() => ContactsCollection.find({}, {sort: { createdAt: -1 }}));
+  const isLoading = useSubscribe('contacts');
+  const contacts = useFind(() => ContactsCollection.find({ archived: { $ne: true }}, {sort: { createdAt: -1 }}));
 
   const showError = ({message}) => {
     setError(message);
@@ -27,17 +27,17 @@ export const ContactList = () => {
     }, 3000);
   }
 
-  const removeContact = (event, _id) => {
+  function archiveContact(event, _id) {
     event.preventDefault();
-    Meteor.call('contacts.remove', { contactId: _id }, (errorResponse) => {
-      if(errorResponse){
+    Meteor.call('contacts.archive', { contactId: _id }, (errorResponse) => {
+      if (errorResponse) {
         console.log(errorResponse);
-        showError({message: errorResponse.errorType + " : " + errorResponse.message});
+        showError({ message: errorResponse.errorType + " : " + errorResponse.message });
       } else {
-        showSuccess({message: "Contact removed !"})
+        showSuccess({ message: "Contact archived !" });
       }
-    })
-  };
+    });
+  }
 
   if(isLoading()){
     return (
@@ -65,10 +65,10 @@ export const ContactList = () => {
           <div>
             <a
               href="#"
-              onClick={(event) => removeContact(event, contact._id)}
+              onClick={(event) => archiveContact(event, contact._id)}
               className="inline-flex items-center shadow-sm px-3 py-0.5 border border-gray-300 text-sm leading-5 font-medium rounded-full text-gray-700 bg-white hover:bg-gray-50"
             >
-              Remove
+              Archive
             </a>
           </div>
         </div>
