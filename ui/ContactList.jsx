@@ -1,7 +1,8 @@
 import React, { memo } from "react";
-import { ContactsCollection } from "../api/ContactsCollection";
+import { ContactsCollection } from "../api/collections/ContactsCollection";
 import { useSubscribe, useFind } from "meteor/react-meteor-data";
-import { Loading } from "./components/Loading";
+import { Loading } from "./components/Loading.jsx";
+import { Meteor } from 'meteor/meteor';
 
 export const ContactList = () => {
   const isLoading = useSubscribe("contacts");
@@ -17,8 +18,7 @@ export const ContactList = () => {
     Meteor.call("contacts.archive", { contactId: _id });
   };
 
-  const ContactItem = memo(({ contact }) => {
-    return (
+  const ContactItem = memo(({ contact }) => (
       <li className="py-4 flex items-center justify-between space-x-3">
         <div className="min-w-0 flex-1 flex items-center space-x-3">
           {contact.imageUrl && (
@@ -52,8 +52,7 @@ export const ContactList = () => {
           </div>
         </div>
       </li>
-    );
-  });
+    ));
 
   if (isLoading()) {
     return <Loading />;
@@ -65,7 +64,6 @@ export const ContactList = () => {
           Contact List
         </h3>
         <ul
-          role="list"
           className="mt-4 border-t border-b border-gray-200 divide-y divide-gray-200"
         >
           {contacts.map((contact) => (

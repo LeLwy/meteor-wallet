@@ -1,8 +1,7 @@
 import React from "react";
-import { XCircleIcon } from '@heroicons/react/solid'
+import XCircleIcon from '@heroicons/react/24/solid/XCircleIcon';
 
-export const ErrorAlert = ({ message }) => {
-  return (
+export const ErrorAlert = ({ message }) => (
     <div className="rounded-md bg-red-50 p-4">
       <div className="flex">
         <div className="flex-shrink-0">
@@ -14,4 +13,3 @@ export const ErrorAlert = ({ message }) => {
       </div>
     </div>
   )
-}

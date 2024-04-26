@@ -1,11 +1,11 @@
 import { Meteor } from "meteor/meteor";
 import React from "react";
 import { useSubscribe, useFind } from "meteor/react-meteor-data";
-import { Modal } from "./components/Modal";
-import { SelectContact } from "./components/SelectContact";
-import { ContactsCollection } from "../api/ContactsCollection";
-import { WalletsCollection } from "../api/WalletsCollection";
-import { Loading } from "./components/Loading";
+import { Modal } from "./components/Modal.jsx";
+import { SelectContact } from "./components/SelectContact.jsx";
+import { ContactsCollection } from "../api/collections/ContactsCollection";
+import { WalletsCollection } from "../api/collections/WalletsCollection";
+import { Loading } from "./components/Loading.jsx";
 
 export const Wallet = () => {
   const isLoadingContacts = useSubscribe("contacts");
@@ -34,9 +34,13 @@ export const Wallet = () => {
       },
       (errorResponse) => {
         if (errorResponse) {
-          errorResponse.details?.forEach((error) => {
-            setErrorMessage(error.message);
-          });
+          if (errorResponse.details) {
+            errorResponse.details.forEach((error) => {
+              setErrorMessage(error.message);
+            });
+          } else {
+            setErrorMessage(errorResponse.error);
+          }
         } else {
           setOpen(false);
           setDestinationWallet({});

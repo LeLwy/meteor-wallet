@@ -1,7 +1,7 @@
 import React from "react";
 import { Meteor } from "meteor/meteor";
-import { ErrorAlert } from "./components/ErrorAlert";
-import { SuccessAlert } from "./components/SuccessAlert";
+import { ErrorAlert } from "./components/ErrorAlert.jsx";
+import { SuccessAlert } from "./components/SuccessAlert.jsx";
 
 export const ContactForm = () => {
   const [name, setName] = React.useState(""); // Formik

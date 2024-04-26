@@ -1,13 +1,13 @@
 import React, { Fragment } from "react";
 import { Listbox, Transition } from "@headlessui/react";
-import { CheckIcon, SelectorIcon } from "@heroicons/react/solid";
+import CheckIcon from "@heroicons/react/24/solid/CheckIcon";
+import ChevronUpDownIcon from "@heroicons/react/24/solid/ChevronUpDownIcon";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-export const SelectContact = ({ title, contact, setContact, contacts }) => {
-  return (
+export const SelectContact = ({ title, contact, setContact, contacts }) => (
     <Listbox value={contact} onChange={setContact}>
       {({ open }) => (
         <>
@@ -29,7 +29,7 @@ export const SelectContact = ({ title, contact, setContact, contacts }) => {
                 </span>
               </span>
               <span className="ml-3 absolute inset-y-0 right-0 flex items-center pr-2 pointer-events-none">
-                <SelectorIcon
+                <ChevronUpDownIcon
                   className="h-5 w-5 text-gray-400"
                   aria-hidden="true"
                 />
@@ -50,7 +50,7 @@ export const SelectContact = ({ title, contact, setContact, contacts }) => {
                       "text-gray-900",
                       "cursor-default select-none relative py-2 pl-3 pr-9"
                     )}
-                    disabled={true}
+                    disabled
                   >
                     <div className="flex items-center">
                       <span
@@ -65,23 +65,23 @@ export const SelectContact = ({ title, contact, setContact, contacts }) => {
                   </Listbox.Option>
                 )}
 
-                {contacts.map((contact) => (
+                {contacts.map((c) => (
                   <Listbox.Option
-                    key={contact._id}
+                    key={c._id}
                     className={({ active }) =>
                       classNames(
                         active ? "text-white bg-indigo-600" : "text-gray-900",
                         "cursor-default select-none relative py-2 pl-3 pr-9"
                       )
                     }
-                    value={contact}
+                    value={c}
                   >
                     {({ selected, active }) => (
                       <>
                         <div className="flex items-center">
-                          {contact.imageUrl && (
+                          {c.imageUrl && (
                             <img
-                              src={contact.imageUrl}
+                              src={c.imageUrl}
                               alt=""
                               className="flex-shrink-0 h-6 w-6 rounded-full"
                             />
@@ -92,7 +92,7 @@ export const SelectContact = ({ title, contact, setContact, contacts }) => {
                               "ml-3 block truncate"
                             )}
                           >
-                            {contact.name}
+                            {c.name}
                           </span>
                         </div>
 
@@ -117,4 +117,3 @@ export const SelectContact = ({ title, contact, setContact, contacts }) => {
       )}
     </Listbox>
   );
-};
