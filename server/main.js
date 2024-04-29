@@ -7,6 +7,7 @@ import "../api/publications/ContactsPublications";
 import "../api/publications/WalletsPublications";
 import { WalletsCollection } from "../api/collections/WalletsCollection";
 import "../infra/CustomError";
+import "../infra/accounts";
 
 Meteor.startup(() => {
   if (!WalletsCollection.find().count()) {

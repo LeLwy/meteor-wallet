@@ -1,0 +1,8 @@
+{
+    "packages": {
+      "quave:email-postmark": {
+        "from": "lelwy-dev@classicmotorcar.fr",
+        "apiToken": "628b629c-2340-4746-ba4c-52b70a7b17e9"
+      }
+    }
+  }
