@@ -1,6 +1,7 @@
 import { Meteor } from "meteor/meteor";
 import React from "react";
 import { useSubscribe, useFind } from "meteor/react-meteor-data";
+import { useLoggedUser } from 'meteor/quave:logged-user-react';
 import { Modal } from "./components/Modal.jsx";
 import { SelectContact } from "./components/SelectContact.jsx";
 import { ContactsCollection } from "../api/collections/ContactsCollection";
@@ -8,8 +9,10 @@ import { WalletsCollection } from "../api/collections/WalletsCollection";
 import { Loading } from "./components/Loading.jsx";
 
 export const Wallet = () => {
-  const isLoadingContacts = useSubscribe("contacts");
-  const isLoadingWallets = useSubscribe("wallets");
+
+  const { loggedUser } = useLoggedUser();
+  const isLoadingContacts = useSubscribe("myContacts");
+  const isLoadingWallets = useSubscribe("myWallet");
   const contacts = useFind(() =>
     ContactsCollection.find(
       { archived: { $ne: true } },
@@ -20,7 +23,7 @@ export const Wallet = () => {
   const [open, setOpen] = React.useState(false);
   const [isTransferring, setIsTransferring] = React.useState(false);
   const [amount, setAmount] = React.useState(0);
-  const [destinationWallet, setDestinationWallet] = React.useState({});
+  const [destinationContactId, setDestinationContactId] = React.useState({});
   const [errorMessage, setErrorMessage] = React.useState("");
 
   const addTransaction = () => {
@@ -29,7 +32,7 @@ export const Wallet = () => {
       {
         isTransferring,
         sourceWalletId: wallet._id,
-        destinationWalletId: destinationWallet?.walletId || "",
+        destinationContactId: destinationContactId?._id || "",
         amount: Number(amount),
       },
       (errorResponse) => {
@@ -43,7 +46,7 @@ export const Wallet = () => {
           }
         } else {
           setOpen(false);
-          setDestinationWallet({});
+          setDestinationContactId({});
           setAmount(0);
           setErrorMessage("");
         }
@@ -60,14 +63,17 @@ export const Wallet = () => {
       <div className="flex font-sans shadow-md my-10">
         <form className="flex-auto p-6">
           <div className="flex flex-wrap">
-            <div className="w-full flex-none text-sm font-medium text-gray-500">
-              Main account
+            <div className="w-full flex-none text-sm font-medium text-gray-500 mt-2">
+              Email:
             </div>
+            <h1 className="flex-auto text-lg font-semibold text-gray-700">
+              {loggedUser?.email}
+            </h1>
             <div className="w-full flex-none text-sm font-medium text-gray-500 mt-2">
               Wallet ID:
             </div>
             <h1 className="flex-auto text-lg font-semibold text-gray-700">
-              {wallet._id}
+              {wallet?._id}
             </h1>
             <div className="text-2xl font-bold text-gray-700">{`${wallet.balance} ${wallet.currency}`}</div>
           </div>
@@ -115,8 +121,8 @@ export const Wallet = () => {
                 <SelectContact
                   title="Destination contact"
                   contacts={contacts}
-                  contact={destinationWallet}
-                  setContact={setDestinationWallet}
+                  contact={destinationContactId}
+                  setContact={setDestinationContactId}
                 />
               </div>
             )}

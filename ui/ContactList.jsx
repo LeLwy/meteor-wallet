@@ -5,7 +5,7 @@ import { Loading } from "./components/Loading.jsx";
 import { Meteor } from 'meteor/meteor';
 
 export const ContactList = () => {
-  const isLoading = useSubscribe("contacts");
+  const isLoading = useSubscribe("myContacts");
   const contacts = useFind(() =>
     ContactsCollection.find(
       { archived: { $ne: true } },

@@ -1,16 +1,20 @@
 import { Meteor } from "meteor/meteor";
 import { ContactsCollection } from "../collections/ContactsCollection";
 
-Meteor.publish("allContacts", () => ContactsCollection.find());
+Meteor.publish('myContacts', function publishContacts(){
 
-Meteor.publish("contacts", () => {
-  const contacts = ContactsCollection.find(
-    { archived: { $ne: true } },
+  const { userId } = this;
+
+  if(!userId) {
+    throw Meteor.Error('Access denied');
+  };
+
+  return ContactsCollection.find(
+    { userId, archived: { $ne: true } },
     {
       fields: {
         createdAt: false,
       },
     }
   );
-  return contacts;
 });

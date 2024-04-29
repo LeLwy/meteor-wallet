@@ -20,7 +20,6 @@ export const ForgotPassword = () => {
 
         Accounts.forgotPassword({ email }, (err) => {
             if(err) {
-                console.log('Error requesting the link to create a new password', err);
                 setError(err)
                 return;
             }

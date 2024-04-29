@@ -21,7 +21,6 @@ export const ResetPassword = () => {
 
         Accounts.resetPassword(token, password, (err) => {
             if(err) {
-                console.log('Error trying to reset the password', err);
                 setError(err)
                 return;
             }
