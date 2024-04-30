@@ -1,56 +1,55 @@
 import React, { useState } from 'react';
+import { Meteor } from 'meteor/meteor';
 import { useAlert } from 'meteor/quave:alert-react-tailwind';
-import { Accounts } from 'meteor/accounts-base';
 import { RoutePaths } from './RoutePaths.jsx';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ErrorAlert } from './components/ErrorAlert.jsx';
 
-export const ResetPassword = () => {
+export const RemoveTransaction = () => {
 
     const { openAlert } = useAlert();
 
     const navigate = useNavigate();
-    const { token } = useParams();
 
-    const [password, setPassword] = useState("");
+    const [transactionId, setTransactionId] = useState("");
     const [error, setError] = useState();
 
-    const resetPassword = (e) => {
+    const removeTransaction = (e) => {
 
         e.preventDefault();
 
-        Accounts.resetPassword(token, password, (err) => {
+        Meteor.call('transactions.remove', transactionId, (err) => {
             if(err) {
+                console.error('Error trying to remove a transaction', err);
                 setError(err)
                 return;
             }
-            setPassword('');
+            setTransactionId('');
             setError(null);
-            openAlert('Password has been changed successfuly. Please sign in.');
-            navigate(RoutePaths.ACCESS);
+            openAlert('The transaction has been removed');
         });
     };
 
     return (
         <div className='flex flex-col items-center'>
             <h3 className='px-3 py-2 text-base font-medium'>
-                Reset your password
+                Remove transaction
             </h3>
             {error && <ErrorAlert message={error.reason || 'Unknown error'} />}
             <form className="mt-6 flex flex-col">
                 <div className="flex flex-col space-y-4">
                     <div className="">
                         <label
-                            htmlFor="password"
+                            htmlFor="transactionId"
                             className="block text-sm font-medium text-gray-700"
                         >
-                            Password
+                            Transaction ID
                         </label>
                         <input
-                            type="password"
-                            id="password"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
+                            type="text"
+                            id="transactionId"
+                            value={transactionId}
+                            onChange={(e) => setTransactionId(e.target.value)}
                             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                         />
                     </div>
@@ -64,9 +63,9 @@ export const ResetPassword = () => {
                     </button>
                     <button 
                         className="ml-3 bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600"
-                        onClick={resetPassword}
+                        onClick={removeTransaction}
                         type='submit'
-                        >Set new password
+                        >Remove
                     </button>
                 </div>
             </form>

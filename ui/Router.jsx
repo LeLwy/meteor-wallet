@@ -8,6 +8,8 @@ import { ResetPassword } from './ResetPassword.jsx';
 import { RoutePaths } from './RoutePaths.jsx';
 import { LoggedUserOnly } from './components/LoggedUserOnly.jsx';
 import { AnonymousOnly } from './components/AnonymousOnly.jsx';
+import { RemoveTransaction } from './RemoveTransaction.jsx';
+import { AdminOnly } from './components/AdminOnly.jsx';
 
 export const Router = () => (
     <Routes>
@@ -15,6 +17,7 @@ export const Router = () => (
         <Route path={RoutePaths.ACCESS} element={<AnonymousOnly><Access /></AnonymousOnly>} />
         <Route path={RoutePaths.FORGOT_PASSWORD} element={<AnonymousOnly><ForgotPassword /></AnonymousOnly>} />
         <Route path={`${RoutePaths.RESET_PASSWORD}/:token`} element={<AnonymousOnly><ResetPassword /></AnonymousOnly>} />
+        <Route path={RoutePaths.REMOVE_TRANSACTION} element={<AdminOnly><RemoveTransaction /></AdminOnly>} />
         <Route path="*" element={<NotFound />} />
     </Routes>
 );
